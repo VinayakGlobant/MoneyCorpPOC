@@ -1,0 +1,965 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": ["/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "121da14c-56ad-4ab5-8b0d-7e7a14100b83",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "P1D",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "requests\n| summarize failures = countif(success == false) by bin(timestamp, 5m), operation_Name\n| render timechart\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "app-insights-demo",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "failures",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [
+                      {
+                        "name": "operation_Name",
+                        "type": "string"
+                      }
+                    ],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {},
+              "partHeader": {
+                "title": "Failure Graph",
+                "subtitle": ""
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 0,
+              "colSpan": 8,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": ["/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "Community-Workbooks/Failures/New Failures Analysis",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "value": "New Failures Analysis",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"version\":\"KqlItem/1.0\",\"query\":\"let startTime = {OverTimeRange:start};\\nlet grain = {OverTimeRange:grain};\\nlet bigWindowTimeRange = {UseComparisonTimeRangeOf};\\nlet bigWindow = exceptions\\n| where timestamp >= ago(bigWindowTimeRange) and timestamp < bin(startTime, grain)\\n| where operation_Name in ({In}) or '*' in ({In})\\n| where {Source}\\n| where problemId in ({ProblemFilter}) or '*' in ({ProblemFilter})\\n| summarize makeset(problemId, 10000);\\nexceptions\\n| where timestamp {OverTimeRange}\\n| where operation_Name in ({In}) or '*' in ({In})\\n| where {Source}\\n| summarize Count = count(), Users = dcount(user_Id) by problemId\\n| where problemId in ({ProblemFilter}) or '*' in ({ProblemFilter})\\n| extend IsNew = iff(problemId !in (bigWindow), true, false)\\n| where \\\"{Show}\\\" == \\\"['New Failure Rate (%)'], ['Existing Failure Rate (%)']\\\" or IsNew\\n| order by Users desc, Count desc, problemId asc\\n| project Problem = iff(IsNew, strcat('🔸 ', problemId), strcat('🔹 ', problemId)), ['Exception Count'] = Count, ['Users Affected'] = Users\",\"size\":0,\"queryType\":0,\"resourceType\":\"microsoft.insights/components\",\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"Exception Count\",\"formatter\":4,\"formatOptions\":{\"min\":0,\"max\":null,\"palette\":\"yellow\"}},{\"columnMatch\":\"Users Affected\",\"formatter\":4,\"formatOptions\":{\"min\":0,\"max\":null,\"palette\":\"green\"}}]}}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {
+                    "OverTimeRange": {
+                      "type": 4,
+                      "value": {
+                        "durationMs": 86400000
+                      },
+                      "labelValue": "Last 24 hours",
+                      "formattedValue": "Last 24 hours"
+                    },
+                    "UseComparisonTimeRangeOf": {
+                      "type": 1,
+                      "value": "7d",
+                      "labelValue": "7d",
+                      "formattedValue": "7d"
+                    },
+                    "In": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "labelValue": "All Operations",
+                      "formattedValue": "'*'"
+                    },
+                    "Source": {
+                      "type": 2,
+                      "value": "1 == 1",
+                      "labelValue": "Server and Client Exceptions",
+                      "formattedValue": "1 == 1"
+                    },
+                    "ProblemFilter": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "labelValue": "All Exceptions",
+                      "formattedValue": "'*'"
+                    },
+                    "Show": {
+                      "type": 2,
+                      "value": "['New Failure Rate (%)'], ['Existing Failure Rate (%)']",
+                      "labelValue": "New and Existing Failures",
+                      "formattedValue": "['New Failure Rate (%)'], ['Existing Failure Rate (%)']"
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookQueryPart"
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": ["/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "community-Workbooks/Failures/Failure Insights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "value": "Failure Analysis",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"version\":\"KqlItem/1.0\",\"query\":\"let row = dynamic({Operation});\\r\\nlet operation = tostring(row.Operation);\\r\\nlet app = tostring(row.App);\\r\\nlet operations = toscalar(requests\\r\\n| where timestamp {TimeRange}\\r\\n| where (name == operation and appName == app) or (operation == '' and app == '') or (operation == '🔸 All operations' and app == '🔸 All Apps')\\r\\n| summarize by operation_Id\\r\\n| summarize makelist(operation_Id, 1000000));\\r\\ndependencies\\r\\n| where timestamp {TimeRange}\\r\\n| where operation_Id in (operations)\\r\\n| where success == false\\r\\n| summarize ['Failing Dependencies'] = count() by ['Dependency'] = name\\r\\n| top 4 by ['Failing Dependencies'] desc\\r\\n\",\"size\":0,\"title\":\"Top Failing Dependencies\",\"noDataMessage\":\"No failed dependencies found.\",\"queryType\":0,\"resourceType\":\"microsoft.insights/components\",\"crossComponentResources\":[\"{Apps}\"],\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"Failing Dependencies\",\"formatter\":4,\"formatOptions\":{\"min\":0,\"max\":null,\"palette\":\"red\"}}]}}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {
+                    "Apps": {
+                      "type": 5,
+                      "value": [
+                        "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                      ],
+                      "labelValue": "Any three",
+                      "specialValue": [
+                        "value::3"
+                      ],
+                      "formattedValue": "'/subscriptions/2a2d0d74-7f86-4edd-bdf5-1f127a432867/resourcegroups/app-grp/providers/microsoft.insights/components/app-insights-demo'"
+                    },
+                    "Operation": {
+                      "type": 1,
+                      "value": "{\"App\":\"\",\"Operation\":\"\"}",
+                      "labelValue": "{\"App\":\"\",\"Operation\":\"\"}",
+                      "formattedValue": "{\"App\":\"\",\"Operation\":\"\"}"
+                    },
+                    "TimeRange": {
+                      "type": 4,
+                      "value": {
+                        "durationMs": 14400000
+                      },
+                      "labelValue": "Last 4 hours",
+                      "formattedValue": "Last 4 hours"
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookQueryPart"
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": ["/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "8a63988d-0bcc-4bb4-9b67-f9b17d15d363",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "// top exception types\nlet start=datetime(\"2025-11-13T10:55:00.000Z\");\nlet end=datetime(\"2025-11-14T10:55:00.000Z\");\nlet timeGrain=5m;\nlet dataset=exceptions\n// additional filters can be applied here\n| where timestamp > start and timestamp < end\n| where client_Type != \"Browser\"\n;// select a filtered set of exceptions and count them by exception type\ndataset// change 'type' on the below line to segment by a different property\n| summarize _count=sum(itemCount) by type\n| sort by _count desc\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedBar",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "app-insights-demo",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "type",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "_count",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": true,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {}
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 4,
+              "colSpan": 2,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "  <a href=\"https://portal.azure.com/#blade/AppInsightsExtension/BladeRedirect/BladeName/failures/ResourceId/%252Fsubscriptions%252F2a2d0d74-7f86-4edd-bdf5-1f127a432867%252Fresourcegroups%252Fapp-grp%252Fproviders%252Fmicrosoft.insights%252Fcomponents%252Fapp-insights-demo/BladeInputs/%7B%22filters%22%3A%5B%5D%2C%22timeContext%22%3A%7B%22durationMs%22%3A86400000%2C%22createdTime%22%3A%222025-11-14T10%3A02%3A04.373Z%22%2C%22endTime%22%3A%222025-11-14T10%3A55%3A00.000Z%22%2C%22isInitialTime%22%3Afalse%2C%22grain%22%3A1%2C%22useDashboardTimeRange%22%3Afalse%7D%2C%22selectedOperation%22%3Anull%2C%22experience%22%3A1%2C%22roleSelectors%22%3A%5B%5D%2C%22clientTypeMode%22%3A%22Server%22%7D\" \n     target=\"_blank\" \n     style=\"background-color:Red; color:white; padding:10px; border-radius:5px; text-decoration:none; display:block;\">\n     Application Failures\n  </a>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 5,
+              "colSpan": 2,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": {
+                    "SubscriptionId": "2a2d0d74-7f86-4edd-bdf5-1f127a432867",
+                    "ResourceGroup": "app-grp",
+                    "Name": "app-insights-demo",
+                    "LinkedApplicationType": 0,
+                    "ResourceId": "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}",
+                    "ResourceType": "microsoft.insights/components",
+                    "IsAzureFirst": false
+                  }
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": ["/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "community-Workbooks/Failures/Failure Insights",
+                  "isOptional": true
+                },
+                {
+                  "name": "ViewerMode",
+                  "value": false,
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "NotebookParams",
+                  "value": "{\"Apps\":[\"value::3\"],\"TimeRange\":{\"durationMs\":14400000},\"Operation\":\"{\\\"App\\\":\\\"\\\",\\\"Operation\\\":\\\"\\\"}\",\"SelectedOperation\":\"all operations\"}",
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "1.0",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/NotebookPinnedPart",
+              "viewState": {
+                "content": {
+                  "configurationId": "community-Workbooks/Failures/Failure Insights"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 12,
+              "y": 6,
+              "colSpan": 2,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": ["/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "community-Workbooks/Failures/Failure Insights",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"json\":\"## Failures Insights\\n\"}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {},
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookTextPart"
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 8,
+              "colSpan": 15,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "2743ac0d-37d8-4084-8c97-eb9d82462ab5",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "P7D",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "exceptions\n| sort by timestamp desc\n| project cloud_RoleName, timestamp, problemId, type, outerMessage, innermostMessage\n|limit 10\n\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "AnalyticsGrid",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "app-insights-demo",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "GridColumnsWidth": {
+                    "outerMessage": "689px",
+                    "innermostMessage": "238px",
+                    "timestamp": "150px",
+                    "cloud_RoleName": "116px",
+                    "type": "233px"
+                  },
+                  "Query": "exceptions\n| sort by timestamp desc\n| project cloud_RoleName, timestamp, type, outerMessage, innermostMessage\n| limit 10\n\n"
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 14,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": [
+                    "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "Community-Workbooks/Failures/New Failures Analysis",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "value": "New Failures Analysis",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"version\":\"KqlItem/1.0\",\"query\":\"let startTime = {OverTimeRange:start};\\r\\nlet grain = {OverTimeRange:grain};\\r\\nlet bigWindowTimeRange = {UseComparisonTimeRangeOf};\\r\\nlet bigWindow = dependencies\\r\\n| where timestamp >= ago(bigWindowTimeRange) and timestamp < bin(startTime, grain)\\r\\n| where operation_Name in ({In}) or '*' in ({In})\\r\\n| where name in ({DependencyFilters}) or '*' in ({DependencyFilters})\\r\\n| where resultCode in ({IncludeResultCodes}) or '*' in ({IncludeResultCodes}) or iff('@' in ({IncludeResultCodes}), resultCode startswith '5', false) or iff('#' in ({IncludeResultCodes}), resultCode startswith '4', false)\\r\\n| where success == false\\r\\n| summarize by name, resultCode\\r\\n| summarize makelist(strcat(name, '-', resultCode));\\r\\ndependencies\\r\\n| where timestamp {OverTimeRange}\\r\\n| where operation_Name in ({In}) or '*' in ({In})\\r\\n| where name in ({DependencyFilters}) or '*' in ({DependencyFilters})\\r\\n| where resultCode in ({IncludeResultCodes}) or '*' in ({IncludeResultCodes}) or iff('@' in ({IncludeResultCodes}), resultCode startswith '5', false) or iff('#' in ({IncludeResultCodes}), resultCode startswith '4', false)\\r\\n| where success == false\\r\\n| summarize Count = count(), Users = dcount(user_Id) by name, resultCode, operation_Name\\r\\n| extend IsNew = iff(strcat(name, '-', resultCode) !in (bigWindow), true, false)\\r\\n| where \\\"{Show}\\\" == \\\"['New Failure Rate (%)'], ['Existing Failure Rate (%)']\\\" or IsNew == true\\r\\n| order by Users desc, Count desc, name asc\\r\\n| project ['Dependency Name'] = iff(IsNew == true, strcat('🔸 ', name), strcat('🔹 ', name)), ['Failed with Result Code'] = resultCode, Operation = operation_Name, ['Dependency Failures'] = Count, ['Users Affected'] = Users\",\"size\":0,\"queryType\":0,\"resourceType\":\"microsoft.insights/components\",\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"Dependency Failures\",\"formatter\":4,\"formatOptions\":{\"min\":0,\"max\":null,\"palette\":\"yellow\"}},{\"columnMatch\":\"Users Affected\",\"formatter\":4,\"formatOptions\":{\"min\":0,\"max\":null,\"palette\":\"green\"}}]}}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {
+                    "OverTimeRange": {
+                      "type": 4,
+                      "value": {
+                        "durationMs": 86400000
+                      },
+                      "labelValue": "Last 24 hours",
+                      "formattedValue": "Last 24 hours"
+                    },
+                    "UseComparisonTimeRangeOf": {
+                      "type": 1,
+                      "value": "7d",
+                      "labelValue": "7d",
+                      "formattedValue": "7d"
+                    },
+                    "In": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "labelValue": "All Operations",
+                      "formattedValue": "'*'"
+                    },
+                    "DependencyFilters": {
+                      "type": 2,
+                      "value": [
+                        "GET rg8876"
+                      ],
+                      "labelValue": "GET rg8876",
+                      "formattedValue": "'GET rg8876'"
+                    },
+                    "IncludeResultCodes": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "labelValue": "All",
+                      "formattedValue": "'*'"
+                    },
+                    "Show": {
+                      "type": 2,
+                      "value": "['New Failure Rate (%)'], ['Existing Failure Rate (%)']",
+                      "labelValue": "New and Existing Failures",
+                      "formattedValue": "['New Failure Rate (%)'], ['Existing Failure Rate (%)']"
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookQueryPart"
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 14,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "101ef3d1-9bd2-4ce7-a13f-61aafc75449d",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "// failed dependency count by target\nlet start=datetime(\"2025-11-13T10:55:00.000Z\");\nlet end=datetime(\"2025-11-14T10:55:00.000Z\");\nlet timeGrain=5m;\nlet dataset=dependencies\n// additional filters can be applied here\n| where timestamp > start and timestamp < end\n| where client_Type != \"Browser\"\n;dataset\n// change 'target' on the below line to segment by a different property\n| summarize failedCount=sumif(itemCount, success == false), impactedUsers=dcountif(user_Id, success == false), totalCount=sum(itemCount) by target\n// calculate failed dependency count for all dependencies\n| union(dataset\n| summarize failedCount=sumif(itemCount, success == false), impactedUsers=dcountif(user_Id, success == false), totalCount=sum(itemCount)| extend target=\"Overall\")\n| where failedCount > 0\n| order by failedCount desc\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedColumn",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "app-insights-demo",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "target",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "failedCount",
+                        "type": "long"
+                      },
+                      {
+                        "name": "impactedUsers",
+                        "type": "long"
+                      },
+                      {
+                        "name": "totalCount",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": true,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {}
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "utc",
+                "granularity": "auto",
+                "relative": "7d"
+              },
+              "displayCache": {
+                "name": "UTC Time",
+                "value": "Past 7 days"
+              },
+              "filteredPartIds": [
+                "StartboardPart-LogsDashboardPart-23203f80-22c3-4a14-9f5c-64a52f94f010",
+                "StartboardPart-PinnedNotebookQueryPart-23203f80-22c3-4a14-9f5c-64a52f94f012",
+                "StartboardPart-PinnedNotebookQueryPart-23203f80-22c3-4a14-9f5c-64a52f94f014",
+                "StartboardPart-LogsDashboardPart-23203f80-22c3-4a14-9f5c-64a52f94f016",
+                "StartboardPart-LogsDashboardPart-23203f80-22c3-4a14-9f5c-64a52f94f01c",
+                "StartboardPart-PinnedNotebookQueryPart-23203f80-22c3-4a14-9f5c-64a52f94f01e",
+                "StartboardPart-PinnedNotebookTextPart-23203f80-22c3-4a14-9f5c-64a52f94f020",
+                "StartboardPart-LogsDashboardPart-23203f80-22c3-4a14-9f5c-64a52f94f022"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "App Failure Dashboard",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "App Failure Dashboard"
+  },
+  "apiVersion": "2022-12-01-preview"
+}

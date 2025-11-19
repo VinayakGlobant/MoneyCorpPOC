@@ -1,0 +1,28 @@
+version: "2023.10"
+project:
+  name: "Dashboard-CI"
+
+parameters:
+  TARGET_SUBSCRIPTION_ID: "22222222-2222-2222-2222-222222222222"  # can be set in TeamCity UI
+  TARGET_RG: "rg-dashboards-prod"
+  APP_INSIGHTS_NAME: "notification-api-ai"
+
+steps:
+  - name: "Checkout repository"
+    checkout: true
+
+  - name: "Validate JSON"
+    script:
+      - bash scripts/validate-json.sh
+
+  - name: "Replace placeholders"
+    script:
+      - bash scripts/replace-placeholders.sh "dashboards/notification-api/dashboard.json" "dashboards/notification-api/dashboard-final.json"
+
+  - name: "Package artifact"
+    script:
+      - zip -r dashboard-artifact.zip dashboards terraform
+
+artifacts:
+  paths:
+    - dashboard-artifact.zip

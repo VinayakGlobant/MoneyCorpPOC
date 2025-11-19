@@ -1,0 +1,76 @@
+trigger: none
+
+variables:
+  TF_WORKING_DIR: 'terraform/env/prod'
+  DASHBOARD_JSON_SRC: 'dashboards/notification-api/dashboard-final.json'
+  DASHBOARD_NAME: 'notification-api-dashboard'
+  LOCATION: 'eastus'
+
+stages:
+- stage: Plan
+  displayName: Terraform Plan
+  jobs:
+  - job: PlanJob
+    pool: { vmImage: 'ubuntu-latest' }
+    steps:
+    - checkout: self
+
+    # If using TeamCity artifact, download it instead of checkout
+    #- task: DownloadPipelineArtifact@2
+    #  inputs: { artifact: 'dashboard-artifact', path: '.' }
+
+    - bash: |
+        set -e
+        echo "Ensure dashboard file exists"
+        ls -la ${{ variables.DASHBOARD_JSON_SRC }}
+
+        # Replace placeholders in case TeamCity didn't
+        export TARGET_SUBSCRIPTION_ID=$(TARGET_SUBSCRIPTION_ID)
+        export TARGET_RG=$(TARGET_RG)
+        export APP_INSIGHTS_NAME=$(APP_INSIGHTS_NAME)
+        ./scripts/replace-placeholders.sh "${{ variables.DASHBOARD_JSON_SRC }}" "${{ variables.DASHBOARD_JSON_SRC }}"
+
+        cd $TF_WORKING_DIR
+        export TF_VAR_dashboard_name="${DASHBOARD_NAME}"
+        export TF_VAR_dashboard_json_path="../../${{ variables.DASHBOARD_JSON_SRC }}"
+        export TF_VAR_target_resource_group="${TARGET_RG}"
+        export TF_VAR_location="${LOCATION}"
+
+        terraform init -input=false
+        terraform plan -out=tfplan -input=false -var="dashboard_json_path=../../${{ variables.DASHBOARD_JSON_SRC }}"
+      displayName: 'Terraform init & plan'
+      env:
+        ARM_SUBSCRIPTION_ID: $(TARGET_SUBSCRIPTION_ID)
+
+- stage: Approval
+  displayName: Manual Approval
+  dependsOn: Plan
+  jobs:
+  - deployment: WaitForApproval
+    environment: 'production'
+    pool: { vmImage: 'ubuntu-latest' }
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: ManualValidation@0
+            inputs:
+              notifyUsers: 'ops-team@contoso.com'
+              instructions: 'Approve to apply dashboard change to production'
+
+- stage: Apply
+  displayName: Terraform Apply
+  dependsOn: Approval
+  condition: succeeded('Approval')
+  jobs:
+  - job: ApplyJob
+    pool: { vmImage: 'ubuntu-latest' }
+    steps:
+    - checkout: self
+    - bash: |
+        set -e
+        cd $TF_WORKING_DIR
+        terraform apply -input=false -auto-approve tfplan
+      displayName: 'Terraform apply'
+      env:
+        ARM_SUBSCRIPTION_ID: $(TARGET_SUBSCRIPTION_ID)
