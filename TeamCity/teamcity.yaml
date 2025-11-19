@@ -3,9 +3,9 @@ project:
   name: "Dashboard-CI"
 
 parameters:
-  TARGET_SUBSCRIPTION_ID: "22222222-2222-2222-2222-222222222222"  # can be set in TeamCity UI
+  TARGET_SUBSCRIPTION_ID: "2e2c8853-dd2c-4e45-89b9-073ee228cfbf"  # can be set in TeamCity UI
   TARGET_RG: "rg-dashboards-prod"
-  APP_INSIGHTS_NAME: "notification-api-ai"
+  APP_INSIGHTS_NAME: "test-fapp-mcorp"
 
 steps:
   - name: "Checkout repository"

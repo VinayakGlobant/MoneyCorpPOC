@@ -290,7 +290,7 @@
                       "specialValue": [
                         "value::3"
                       ],
-                      "formattedValue": "'/subscriptions/2a2d0d74-7f86-4edd-bdf5-1f127a432867/resourcegroups/app-grp/providers/microsoft.insights/components/app-insights-demo'"
+                      "formattedValue": "/subscriptions/${TARGET_SUBSCRIPTION_ID}/resourceGroups/${TARGET_RG}/providers/microsoft.insights/components/${APP_INSIGHTS_NAME}"
                     },
                     "Operation": {
                       "type": 1,
