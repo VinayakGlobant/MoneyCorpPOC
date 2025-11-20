@@ -17,7 +17,7 @@ steps:
 
   - name: "Replace placeholders"
     script:
-      - bash scripts/replace-placeholders.sh "dashboards/notification-api/dashboard.json" "dashboards/notification-api/dashboard-final.json"
+      - bash scripts/replace-placeholders.sh "azure-dashboards/notification-api/dashboard.json" "azure-dashboards/notification-api/dashboard-final.json"
 
   - name: "Package artifact"
     script:
