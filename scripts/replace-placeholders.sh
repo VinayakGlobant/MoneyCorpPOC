@@ -1,19 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
-INFILE="$1"
-OUTFILE="$2"
 
-if [[ -z "$INFILE" || -z "$OUTFILE" ]]; then
-  echo "Usage: $0 <infile> <outfile>"
-  exit 1
-fi
+# Normalize line endings (important!)
+sed -i 's/\r$//' scripts/replace-placeholders.sh
+chmod +x scripts/replace-placeholders.sh
 
-cp "$INFILE" "$OUTFILE"
+# Verify environment variables
+echo "TARGET_SUBSCRIPTION_ID=${TARGET_SUBSCRIPTION_ID}"
+echo "TARGET_RG=${TARGET_RG}"
+echo "APP_INSIGHTS_NAME=${APP_INSIGHTS_NAME}"
 
-# Replace placeholders using env variables expected to be set by pipeline
-sed -i "s|\${TARGET_SUBSCRIPTION_ID}|${TARGET_SUBSCRIPTION_ID}|g" "$OUTFILE"
-sed -i "s|\${TARGET_RG}|${TARGET_RG}|g" "$OUTFILE"
-sed -i "s|\${APP_INSIGHTS_NAME}|${APP_INSIGHTS_NAME}|g" "$OUTFILE"
-# Add other replacements as needed
-
-echo "Wrote replaced file to $OUTFILE"
+# Run script with correct arguments
+scripts/replace-placeholders.sh \
+  azure-dashboards/notification-api/Dashboard.json \
+  dist/Dashboard.final.json
