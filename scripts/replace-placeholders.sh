@@ -11,7 +11,7 @@ cp scripts/replace-placeholders.sh "$WORKDIR/replacer.sh"
 chmod +x "$WORKDIR/replacer.sh"
 
 # Copy input file to temp dir
-cp dashboards/dashboard.json "$WORKDIR/input.json"
+cp azure-dashboards/notificaton-api/Dashboard.json "$WORKDIR/input.json"
 
 # Run script on temp copies ONLY
 "$WORKDIR/replacer.sh" \
