@@ -1,22 +1,25 @@
 #!/bin/bash
 set -e
 
-# Create safe temp copy of the replacer script
-TMP_SCRIPT=$(mktemp)
-cp scripts/replace-placeholders.sh "$TMP_SCRIPT"
-chmod +x "$TMP_SCRIPT"
+echo "Running placeholder replacement safely..."
 
-echo "TARGET_SUBSCRIPTION_ID=$TARGET_SUBSCRIPTION_ID"
-echo "TARGET_RG=$TARGET_RG"
-echo "APP_INSIGHTS_NAME=$APP_INSIGHTS_NAME"
+# Create a temp workspace OUTSIDE TeamCity checkout dir
+WORKDIR=$(mktemp -d)
 
-# Run on a temp work copy of the dashboard too (avoid modifying the repo)
-cp azure-dashboards/notification-api/Dashboard.json /tmp/dashboard.json
+# Copy replacer script to temp dir
+cp scripts/replace-placeholders.sh "$WORKDIR/replacer.sh"
+chmod +x "$WORKDIR/replacer.sh"
 
-"$TMP_SCRIPT" /tmp/dashboard.json /tmp/dashboard.final.json
+# Copy input file to temp dir
+cp dashboards/dashboard.json "$WORKDIR/input.json"
 
-# Only copy the final file to dist (TeamCity allows this)
+# Run script on temp copies ONLY
+"$WORKDIR/replacer.sh" \
+    "$WORKDIR/input.json" \
+    "$WORKDIR/output.json"
+
+# Copy ONLY the final output to dist (allowed)
 mkdir -p dist
-cp /tmp/dashboard.final.json dist/dashboard.final.json
+cp "$WORKDIR/output.json" dist/dashboard.final.json
 
-echo "Done."
+echo "Replacement complete."
